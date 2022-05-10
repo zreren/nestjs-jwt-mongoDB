@@ -3,11 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose'
 import { NotFoundError } from 'rxjs';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { loginDto } from './dto/login.dto';
 import { registerDto } from './dto/register.dto';
 import { User } from './models/users.model';
-
+import fs from 'fs';
 @Injectable()
 export class UsersService {
     constructor(
@@ -29,7 +29,10 @@ export class UsersService {
         if(!match) {
             throw new NotFoundException('Invalid credentials');
         }
-        const jwtToken = await this.authService.createAccessToken(user._id);
+        var fs = require('fs')
+        const privateKey = fs.readFileSync('./private.key','utf8')
+        // console.log(privateKey);
+        const jwtToken = await this.authService.createAccessToken(user._id,privateKey);
         return {
             username: user.username, jwtToken
         }

@@ -29,6 +29,7 @@ export class UsersController {
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthGuard('jwt'))
     public async findProtofile(@Request() request): Promise<User[]> {
+        console.log('going to got')
        return request.user    
     }
 }

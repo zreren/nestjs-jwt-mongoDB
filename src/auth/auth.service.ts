@@ -12,10 +12,9 @@ export class AuthService {
         @InjectModel('User')
         private readonly userModel: Model<User>,
     ) {}
-    public async createAccessToken(userId: string): Promise<string> {
-        return sign({userId}, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRATION
-        })
+    public async createAccessToken(userId: string,privateKey): Promise<string> {
+        const signOptions = {expiresIn:process.env.JWT_EXPIRATION,algorithm:"RS256"}
+        return sign({userId}, privateKey, {expiresIn:process.env.JWT_EXPIRATION,algorithm:"RS256"})
     }
 
     public async validateUser(jstPayload: JwtPayload): Promise<User> {

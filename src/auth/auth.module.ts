@@ -5,7 +5,6 @@ import { UsersSchema } from '../users/schemas/user.schema';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
-
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -16,9 +15,10 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     ]),
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
+      publicKey: JwtStrategy.getPublicKey(),
+      privateKey:JwtStrategy.getPrivateKey(),
       signOptions: {
-        expiresIn: process.env.JWT_EXPIRATION
+        expiresIn:process.env.JWT_EXPIRATION,algorithm:"RS256"
       }
     })
   ],
